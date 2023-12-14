@@ -99,7 +99,7 @@ namespace TaskTracker.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, UpdateProjectDTO project)
+        public IActionResult Put(int id, [FromBody] UpdateProjectDTO project)
         {
             if (project == null || id <= 0)
                 return NotFound();
