@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskTracker.API.DTO;
@@ -10,6 +11,7 @@ using Task = TaskTracker.DataAccess.Entities.Task;
 
 namespace TaskTracker.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TaskController : ControllerBase
@@ -171,7 +173,16 @@ namespace TaskTracker.API.Controllers
 
             try
             {
-                Task task = _mapper.Map<Task>(taskToAdd);
+                //Task task = _mapper.Map<Task>(taskToAdd);
+                Task task = new Task
+                {
+                    Name = taskToAdd.Name,
+                    Description = taskToAdd.Description,
+                    Priority = taskToAdd.Priority,
+                    Status = taskToAdd.Status,
+                    ProjectId = projectId,
+                    Project = _unitOfWork.ProjectRepository.GetExp(x => x.Id == projectId)
+                };
 
                 _unitOfWork.TaskRepository.AddTask(projectId, task);
                 _unitOfWork.Save();
@@ -181,7 +192,7 @@ namespace TaskTracker.API.Controllers
                 return StatusCode(500, new { error = "Internal server error.", ex.Message });
             }            
 
-            return Ok();
+            return Created();
         }
 
         [HttpDelete("removeTask/")]

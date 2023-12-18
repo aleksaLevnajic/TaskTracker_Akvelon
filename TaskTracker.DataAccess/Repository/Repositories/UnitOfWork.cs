@@ -17,10 +17,12 @@ namespace TaskTracker.DataAccess.Repository.Repositories
             _context = context;
             TaskRepository = new TaskRepository(_context);
             ProjectRepository = new ProjectRepository(_context);
+            UserRepository = new UserRepository(_context);
         }
 
         public ITaskRepository TaskRepository { get; private set; }
         public IProjectRepository ProjectRepository { get; private set; }
+        public IUserRepository UserRepository { get; private set; }
 
         public void Dispose()
         {

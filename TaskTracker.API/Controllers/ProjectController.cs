@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using TaskTracker.API.DTO;
@@ -9,6 +10,7 @@ using TaskTracker.DataAccess.Repository.Contracts;
 
 namespace TaskTracker.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase

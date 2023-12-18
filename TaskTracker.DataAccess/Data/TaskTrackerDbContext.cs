@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TaskTracker.DataAccess.Entities;
+using TaskTracker.Domain.Entities;
 using Task = TaskTracker.DataAccess.Entities.Task; // it has to have whole namespace bc Task class interferes with System.Threading.Task class
 
 namespace TaskTracker.DataAccess.Data
@@ -19,6 +20,7 @@ namespace TaskTracker.DataAccess.Data
 
         public virtual DbSet<Task> Tasks { get; set; } 
         public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,7 +50,11 @@ namespace TaskTracker.DataAccess.Data
 
             modelBuilder.Entity<Project>().HasData(
                 new Project { Id = 1, Name = "Task Tracker App", StartDate = DateTime.UtcNow, EndDate = null, Priority = 1, Status = ProjectStatus.Active }
-                );            
+                );
+
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = 1, FirstName = "John", LastName = "Doe", PasswordHash = "$2a$12$y.tQIiynlAck7eW0y8GPK.8ZRkKUyll3Bj8ln00tllZdJESgnVeIO", Username = "johndoe" }
+                );
         }
     }
 

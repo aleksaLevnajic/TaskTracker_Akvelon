@@ -10,6 +10,7 @@ namespace TaskTracker.DataAccess.Repository.Contracts
     {
         ITaskRepository TaskRepository { get; }
         IProjectRepository ProjectRepository { get; }
+        IUserRepository UserRepository { get; }
 
         void Save();
     }
