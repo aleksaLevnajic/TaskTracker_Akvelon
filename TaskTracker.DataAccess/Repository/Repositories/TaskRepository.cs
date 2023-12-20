@@ -18,7 +18,9 @@ namespace TaskTracker.DataAccess.Repository.Repositories
         {
             var project = _context.Projects.Find(projectId);
             task.ProjectId = projectId;
-            project.Tasks.ToList().Add(task);
+            //project.Tasks.ToList().Add(task);
+            _context.Tasks.Add(task);
+            project.Tasks.Append(task).ToList();
         }
 
         public void RemoveTask(int projectId, int taskId)

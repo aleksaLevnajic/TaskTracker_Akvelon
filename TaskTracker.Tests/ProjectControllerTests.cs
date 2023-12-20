@@ -47,8 +47,8 @@ namespace TaskTracker.Tests
             var project = new CreateProjectDTO
             {
                 Name = "Test",
-                StartDate = new DateTime(2023, 12, 12),
-                EndDate = new DateTime(2023, 12, 20),
+                StartDate = new DateTime(2023, 12, 20),
+                EndDate = new DateTime(2023, 12, 30),
                 Priority = 1
             };
 
@@ -57,6 +57,19 @@ namespace TaskTracker.Tests
 
             Assert.NotNull(result);
             Assert.Equal((int)HttpStatusCode.Created, result!.StatusCode);
+        }
+
+        [Fact]
+        public void TestDeletingProject_DeleteFromDb()
+        {
+            var unitOfworkMock = MockIUnitOfWork.GetMock();
+            var projectController = new ProjectController (unitOfworkMock.Object);
+            var projectIdToDelete = 111;
+
+            var result = projectController.Delete(projectIdToDelete) as ObjectResult;
+
+            Assert.NotNull(result);
+            Assert.Equal((int)HttpStatusCode.NoContent, result!.StatusCode);
 
         }
     }

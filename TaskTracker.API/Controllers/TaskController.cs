@@ -173,8 +173,8 @@ namespace TaskTracker.API.Controllers
 
             try
             {
-                //Task task = _mapper.Map<Task>(taskToAdd);
-                Task task = new Task
+                Task task = _mapper.Map<Task>(taskToAdd);
+                /*Task task = new Task
                 {
                     Name = taskToAdd.Name,
                     Description = taskToAdd.Description,
@@ -182,7 +182,7 @@ namespace TaskTracker.API.Controllers
                     Status = taskToAdd.Status,
                     ProjectId = projectId,
                     Project = _unitOfWork.ProjectRepository.GetExp(x => x.Id == projectId)
-                };
+                };*/
 
                 _unitOfWork.TaskRepository.AddTask(projectId, task);
                 _unitOfWork.Save();
