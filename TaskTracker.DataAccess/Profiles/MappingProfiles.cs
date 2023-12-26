@@ -11,7 +11,7 @@ using Task = TaskTracker.DataAccess.Entities.Task;
 
 namespace TaskTracker.DataAccess.Profiles
 {
-    internal class MappingProfiles : Profile
+    public class MappingProfiles : Profile
     {
         public MappingProfiles() 
         {

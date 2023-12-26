@@ -12,6 +12,7 @@ using TaskTracker.API.Swagger;
 using TaskTracker.DataAccess.Data;
 using TaskTracker.DataAccess.Repository.Contracts;
 using TaskTracker.DataAccess.Repository.Repositories;
+using TaskTracker.DataAccess.Profiles;
 
 namespace TaskTracker.API
 {
@@ -53,7 +54,7 @@ namespace TaskTracker.API
             builder.Services.AddScoped<ITaskRepository, TaskRepository>();
             builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
-            builder.Services.AddAutoMapper(typeof(Program));
+            builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
             builder.Services.AddControllers().AddJsonOptions(opt =>
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);

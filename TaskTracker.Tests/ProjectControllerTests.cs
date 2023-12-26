@@ -27,7 +27,7 @@ namespace TaskTracker.Tests
             Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
         }
 
-        /*[Fact]
+        [Fact]
         public void TestGetProjectById_ReturnsSingleProject()
         {
             var unitOfWorkMock = MockIUnitOfWork.GetMock();
@@ -36,8 +36,8 @@ namespace TaskTracker.Tests
             var result = projectController.GetById(111) as ObjectResult;
 
             Assert.NotNull(result);
-            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
-        }*/
+            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);            
+        }
 
         [Fact]
         public void TestCreatingProject_AddToDb()
@@ -46,7 +46,7 @@ namespace TaskTracker.Tests
             var projectController = new ProjectController(unitOfWorkMock.Object);
             var project = new CreateProjectDTO
             {
-                Name = "Test",
+                Name = "Test2222",
                 StartDate = new DateTime(2023, 12, 20),
                 EndDate = new DateTime(2023, 12, 30),
                 Priority = 1

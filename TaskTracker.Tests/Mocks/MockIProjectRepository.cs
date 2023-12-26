@@ -44,7 +44,7 @@ namespace TaskTracker.Tests.Mocks
                 }
             };
 
-            /*mock.Setup(m => m.Get(It.IsAny<int>(), It.IsAny<Expression<Func<Project, object>>>())).Returns((int id) 
+            /*mock.Setup(m => m.Get(It.IsAny<int>(), It.IsAny<Expression<Func<Project, object>>>())).Returns((int id)
                 => projects.FirstOrDefault(p => p.Id == id));*/
             mock.Setup(m => m.GetAll()).Returns(() => projects);
             mock.Setup(m => m.Add(It.IsAny<Project>())).Callback(() 
