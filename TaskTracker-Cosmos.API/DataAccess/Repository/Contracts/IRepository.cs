@@ -13,8 +13,5 @@ namespace TaskTracker_Cosmos.API.DataAccess.Repository.Contracts
         IEnumerable<T> GetAll(params Expression<Func<T, object>>[] includes);
         T GetExp(Expression<Func<T, bool>>? expression);
         IEnumerable<T> GetAllExp(Expression<Func<T, bool>>? expression);
-        /*void Add(T entity);
-        void Update(T entity);
-        void Delete(T entity);*/
     }
 }

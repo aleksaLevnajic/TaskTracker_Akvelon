@@ -16,7 +16,6 @@ namespace TaskTracker_Cosmos.API.Controllers
             _taskRepository = taskRepository;
         }
 
-        // GET: api/<TaskController>
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -27,7 +26,6 @@ namespace TaskTracker_Cosmos.API.Controllers
             return Ok(tasks);
         }
 
-        // GET api/<TaskController>/5
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {

@@ -13,13 +13,7 @@ namespace TaskTracker_Cosmos.API.DataAccess.Repository.Contracts
     {
         public ProjectRepository(TaskTrackerCosmosDbContext context) : base(context)
         {
-        }        
+        }     
 
-        /*public IEnumerable<Entities.Task> ViewAllTasks(int id)
-        {
-            var tasks = _context.Projects.Where(x => x.Id == id).SelectMany(p => p.Tasks);
-
-            return tasks;
-        }*/
     }
 }

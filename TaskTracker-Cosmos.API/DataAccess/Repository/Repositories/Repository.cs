@@ -18,18 +18,12 @@ namespace TaskTracker_Cosmos.API.DataAccess.Repository.Contracts
         public Repository(TaskTrackerCosmosDbContext context)
         {
             _context = context;
-            //_context.Projects.Include(x => x.Tasks);
-            //_context.Tasks.Include(x => x.Project).Include(x => x.ProjectId);
         }
 
         public T Get(int id, params Expression<Func<T, object>>[] includes)
         {
             var result = _context.Set<T>().AsQueryable();
 
-            /*foreach( var include in includes)
-            {
-                result = result.Include(include);
-            }*/
 
             return result.FirstOrDefault(x => x.Id == id);            
         }
@@ -38,11 +32,7 @@ namespace TaskTracker_Cosmos.API.DataAccess.Repository.Contracts
         {
             var result = _context.Set<T>().AsQueryable();
 
-            /*foreach(var include in includes)
-            {
-                result = result.Include(include);
-            }*/  
-
+      
             return result.ToList();
         }
         public T GetExp(Expression<Func<T, bool>>? expression)
@@ -58,20 +48,5 @@ namespace TaskTracker_Cosmos.API.DataAccess.Repository.Contracts
 
             return query.ToList();
         }
-        /*
-        public void Add(T entity)
-        {
-            _context.Set<T>().Add(entity);
-        }
-
-        public void Delete(T entity)
-        {
-            _context.Set<T>().Remove(entity);
-        }
-        
-        public void Update(T entity)
-        {
-            _context.Set<T>().Update(entity);
-        } */
     }
 }

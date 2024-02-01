@@ -9,6 +9,6 @@ namespace TaskTracker_Cosmos.API.DataAccess.Repository.Contracts
 {
     public interface IProjectRepository : IRepository<Project>
     {       
-        //IEnumerable<Task> ViewAllTasks(int id);
+
     }
 }

@@ -15,13 +15,6 @@ namespace TaskTracker_Cosmos.API.DataAccess.Data
         public virtual DbSet<Task> Tasks { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
 
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseCosmos("https://task-tracker-cdb.documents.azure.com:443/",
-                "iGfMUk8DqEz6BcTc5x2uT190bnRrOIdzsrXoximJItqS41sZ5JAJ1V828dEOx6sA8l7U1w0AonwkACDbMdoTiA==",
-                "tasktracker-db");
-        }*/
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Task>().Property(p => p.Id).HasConversion(id => id.ToString(), id => int.Parse(id));
