@@ -57,7 +57,7 @@ namespace TaskTracker.API
             builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
             builder.Services.AddControllers().AddJsonOptions(opt =>
-                opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+                opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

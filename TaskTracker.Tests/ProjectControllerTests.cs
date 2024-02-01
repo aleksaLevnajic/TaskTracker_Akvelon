@@ -47,8 +47,8 @@ namespace TaskTracker.Tests
             var project = new CreateProjectDTO
             {
                 Name = "Test2222",
-                StartDate = new DateTime(2023, 12, 20),
-                EndDate = new DateTime(2023, 12, 30),
+                StartDate = new DateTime(2024, 12, 20),
+                EndDate = new DateTime(2024, 12, 30),
                 Priority = 1
             };
 
