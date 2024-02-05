@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "TaskTracker.Function": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7027",
+      "launchBrowser": false
+    }
+  }
+}

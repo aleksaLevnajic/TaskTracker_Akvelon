@@ -94,7 +94,7 @@ namespace TaskTracker.API
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            if (!app.Environment.IsDevelopment()) //added ! to test for production stage
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();

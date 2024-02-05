@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTracker.Tests", "TaskTr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTracker-NSubstitute.Tests", "TaskTracker-NSubstitute.Tests\TaskTracker-NSubstitute.Tests.csproj", "{F3884C63-097C-470E-9912-52CB491D7090}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTracker-Cosmos.API", "TaskTracker-Cosmos.API\TaskTracker-Cosmos.API.csproj", "{F247DE62-C521-48DA-AC19-6DC1338AE8AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTracker-Cosmos.API", "TaskTracker-Cosmos.API\TaskTracker-Cosmos.API.csproj", "{F247DE62-C521-48DA-AC19-6DC1338AE8AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTracker.Function", "TaskTracker.Function\TaskTracker.Function.csproj", "{966BEB70-91DC-483A-B4BE-3B1DC5E54EE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{F247DE62-C521-48DA-AC19-6DC1338AE8AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F247DE62-C521-48DA-AC19-6DC1338AE8AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F247DE62-C521-48DA-AC19-6DC1338AE8AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{966BEB70-91DC-483A-B4BE-3B1DC5E54EE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{966BEB70-91DC-483A-B4BE-3B1DC5E54EE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{966BEB70-91DC-483A-B4BE-3B1DC5E54EE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{966BEB70-91DC-483A-B4BE-3B1DC5E54EE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
