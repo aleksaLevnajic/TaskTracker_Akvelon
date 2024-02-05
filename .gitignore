@@ -368,3 +368,4 @@ FodyWeavers.xsd
 /TaskTracker.API/appsettings.Development.json
 /TaskTracker.API/appsettings.Development.json
 /TaskTracker.API/appsettings.Production.json
+/TaskTracker.API/docker-compose.yml
