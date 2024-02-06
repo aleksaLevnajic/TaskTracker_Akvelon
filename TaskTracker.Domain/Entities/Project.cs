@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TaskTracker.DataAccess.Entities
@@ -17,7 +18,7 @@ namespace TaskTracker.DataAccess.Entities
         [Range(1, 100, ErrorMessage = "Priority must be greater than 0.")]
         public int Priority { get; set; }
         public ProjectStatus Status { get; set; }
-
+        //[JsonIgnore]
         public IEnumerable<Task> Tasks { get; set; } = new List<Task>();
     }
 

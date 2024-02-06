@@ -25,8 +25,8 @@ namespace TaskTracker.Function
         //"0 */5 * * * *" every 5 min
         public async Task Run([TimerTrigger("0 */1 * * * *")]TimerInfo myTimer, ILogger log)
         {
-            var cosmosConnectionString = Environment.GetEnvironmentVariable("CosmosDBConnectionString");
-            var cosmosClient = new CosmosClient(cosmosConnectionString);
+            //var cosmosConnectionString = Environment.GetEnvironmentVariable("CosmosDBConnectionString");
+            var cosmosClient = new CosmosClient(Environment.GetEnvironmentVariable("AccountEndpoint"), Environment.GetEnvironmentVariable("AccountKey"));
             var databaseName = "tasktracker-db";
             var containerName = "Projects";
 
@@ -45,7 +45,7 @@ namespace TaskTracker.Function
                         {
                             var project = new
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")).ToString(),
                                 Name = reader.GetString(reader.GetOrdinal("Name")),
                                 StartDate = reader.GetDateTime(reader.GetOrdinal("StartDate")),
                                 EndDate = reader.IsDBNull(reader.GetOrdinal("EndDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("EndDate")),
@@ -53,8 +53,13 @@ namespace TaskTracker.Function
                                 Status = (ProjectStatus)reader.GetInt32(reader.GetOrdinal("Status")),
                                 Tasks = GetTasksFroProject(reader.GetInt32(reader.GetOrdinal("Id")), sqlConnection)
                             };
-                            
-                            var projectJson = JsonConvert.SerializeObject(project);
+
+                            var jsonSettings = new JsonSerializerSettings
+                            {
+                                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                            };
+
+                            var projectJson = JsonConvert.SerializeObject(project, jsonSettings);
 
                             await cosmosContainer.CreateItemAsync(projectJson);
                         }
@@ -66,21 +71,21 @@ namespace TaskTracker.Function
             {
                 //var sqlConnection = new SqlConnection(sqlConnectionString);
                 List<object> tasks = new List<object>();
-                using (var sqlCommand = new SqlCommand($"SELECT * FROM Tasks WHERE ProjectId = {projectId}", connection))
+                using (var sqlCommand2 = new SqlCommand($"SELECT * FROM Tasks WHERE ProjectId = {projectId}", connection))
                 {
-                    using (var reader = sqlCommand.ExecuteReader())
+                    using (var reader = sqlCommand2.ExecuteReader())
                     {
                         while (reader.Read())
                         {                           
 
                             var task = new
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")).ToString(),
                                 Name = reader.GetString(reader.GetOrdinal("Name")),
                                 Description = reader.GetString(reader.GetOrdinal("Description")),
                                 Priority = reader.GetInt32(reader.GetOrdinal("Priority")),
                                 Status = (TaskStatus)reader.GetInt32(reader.GetOrdinal("Status")),
-                                ProjectId = reader.GetInt32(projectId)
+                                ProjectId = reader.GetInt32(reader.GetOrdinal("ProjectId")), 
                             };
 
                             tasks.Add(task);

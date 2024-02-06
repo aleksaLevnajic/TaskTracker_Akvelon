@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace TaskTracker_Cosmos.API.DataAccess.Entities
 {
@@ -9,7 +10,7 @@ namespace TaskTracker_Cosmos.API.DataAccess.Entities
         public DateTime? EndDate { get; set; }
         public int Priority { get; set; }
         public ProjectStatus Status { get; set; }
-
+        //[JsonIgnore]
         public IEnumerable<Task> Tasks { get; set; } = new List<Task>();
     }
 

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace TaskTracker_Cosmos.API.DataAccess.Entities
 {
@@ -12,7 +13,7 @@ namespace TaskTracker_Cosmos.API.DataAccess.Entities
         public TaskStatus Status { get; set; }
 
         public int ProjectId { get; set; }
-
+        [JsonIgnore]
         public Project Project { get; set; }
     }
 

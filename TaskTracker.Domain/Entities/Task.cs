@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace TaskTracker.DataAccess.Entities
 {
@@ -16,7 +17,7 @@ namespace TaskTracker.DataAccess.Entities
         public TaskStatus Status { get; set; }
         [Required(ErrorMessage = "ProjectId is requird")]
         public int ProjectId { get; set; }
-
+        [JsonIgnore]
         public Project Project { get; set; }
     }
 
