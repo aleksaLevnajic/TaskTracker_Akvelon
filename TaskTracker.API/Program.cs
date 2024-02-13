@@ -13,6 +13,12 @@ using TaskTracker.DataAccess.Data;
 using TaskTracker.DataAccess.Repository.Contracts;
 using TaskTracker.DataAccess.Repository.Repositories;
 using TaskTracker.DataAccess.Profiles;
+using Azure.Core;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Microsoft.AspNetCore.Authentication.AzureAD.UI;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Identity.Web;
 
 namespace TaskTracker.API
 {
@@ -37,16 +43,58 @@ namespace TaskTracker.API
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     //ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt:Token").Value!))                    
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("Jwt:Token").Value!))
                 };
             });
+
+            /*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));*/
+
+
+            /*var config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.Production.json", false).Build();
+            builder.Services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
+                    .AddAzureAD(options => config.Bind("AzureAd", options));*/
+
+            /*var config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.Production.json", false).Build();
+
+            builder.Services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
+                    .AddMicrosoftIdentityWebApi(options => config.Bind("AzureAd", options));*/
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins("https://tasktrackerapi-live-project.azurewebsites.net/swagger/index.html") 
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+            });
+
+
 
             builder.Services.AddAuthorization();
 
             builder.Services.AddControllers();
+
+            static void KeyVaultConfiguration(WebApplicationBuilder builder)
+            {
+                var keyVaultUrl = builder.Configuration["KeyVaultUrl"]!;
+                var secretClient = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
+                builder.Services.AddSingleton(secretClient);
+
+                string secretConnString = builder.Configuration["SecretName"]!;
+                KeyVaultSecret secret = secretClient.GetSecret(secretConnString);
+                builder.Configuration[secretConnString] = secret.Value;
+                //add foreach so you can add jwt token
+            }
+            KeyVaultConfiguration(builder);
+
             builder.Services.AddDbContext<TaskTrackerDbContext>(options =>
+                options.UseSqlServer(builder.Configuration[builder.Configuration["SecretName"]!]!));
+
+            /*builder.Services.AddDbContext<TaskTrackerDbContext>(options =>
                 options.UseSqlServer(
-                builder.Configuration.GetConnectionString("SqlServerCS")));
+                builder.Configuration.GetConnectionString("SqlServerCS")));*/
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -59,6 +107,9 @@ namespace TaskTracker.API
             builder.Services.AddControllers().AddJsonOptions(opt =>
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+            
+
+
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -68,7 +119,7 @@ namespace TaskTracker.API
                     securityScheme: new OpenApiSecurityScheme
                     {
                         Name = "Authorization",
-                        Description = "Enter Bearer Token. Example: Bearer 12345asdfg",
+                        Description = "Enter Bearer Token(Example: Bearer 12345asdfg)",
                         In = ParameterLocation.Header,
                         Type = SecuritySchemeType.ApiKey,
                         Scheme = "Bearer"
@@ -83,9 +134,9 @@ namespace TaskTracker.API
                                 Type = ReferenceType.SecurityScheme,
                                 Id = JwtBearerDefaults.AuthenticationScheme
                             }
-                        
+
                         }, new string[]{}
-                    }                   
+                    }
                 });
             });
 
@@ -99,7 +150,7 @@ namespace TaskTracker.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseCors("AllowSpecificOrigin");
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
@@ -110,5 +161,6 @@ namespace TaskTracker.API
 
             app.Run();
         }
+        
     }
 }

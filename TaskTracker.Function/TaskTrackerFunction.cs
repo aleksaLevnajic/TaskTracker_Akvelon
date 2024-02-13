@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Drawing.Text;
 using System.Threading.Tasks;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -14,25 +17,35 @@ namespace TaskTracker.Function
     public class TaskTrackerFunction
     {
         private readonly CosmosClient cosmosClient;
+        private readonly IConfiguration configuration;
 
-        public TaskTrackerFunction(CosmosClient cosmosClient)
+        public TaskTrackerFunction(CosmosClient cosmosClient, IConfiguration configuration)
         {
             this.cosmosClient = cosmosClient;
+            this.configuration = configuration;
         }
 
         [FunctionName("TaskTrackerFunction")]
         //"0 0 */5 * * *" every 5h
         //"0 */5 * * * *" every 5 min
         public async Task Run([TimerTrigger("0 */1 * * * *")]TimerInfo myTimer, ILogger log)
-        {
-            //var cosmosConnectionString = Environment.GetEnvironmentVariable("CosmosDBConnectionString");
+        {    
+            string GetSecret(string secretName)
+                => secretName + ": " + Environment.GetEnvironmentVariable(secretName, EnvironmentVariableTarget.Process);
+            /*var accountEndpoint = configuration["AccountEndpoint"];
+            var accountKey = configuration["AccountKey"];*/
+
+
             var cosmosClient = new CosmosClient(Environment.GetEnvironmentVariable("AccountEndpoint"), Environment.GetEnvironmentVariable("AccountKey"));
+            //var cosmosClient = new CosmosClient(accountEndpoint, accountKey);
             var databaseName = "tasktracker-db";
             var containerName = "Projects";
 
             var cosmosContainer = cosmosClient.GetContainer(databaseName, containerName);
 
             var sqlConnectionString = Environment.GetEnvironmentVariable("SqlDatabaseConnectionString");
+            //var sqlConnectionString = configuration["SqlDatabaseConnectionString"];
+            //var sqlConnectionString = GetSecret("SqlDatabaseConnectionString");
             using (var sqlConnection = new SqlConnection(sqlConnectionString)) 
             { 
                 await sqlConnection.OpenAsync();

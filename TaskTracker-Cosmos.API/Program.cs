@@ -1,4 +1,6 @@
 
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using TaskTracker_Cosmos.API.DataAccess.Data;
@@ -69,15 +71,9 @@ namespace TaskTracker_Cosmos.API
                 taskTrackerCosmosContext.SaveChanges();
             }*/
 
-            var builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder(args);           
 
-            // Add services to the container.
-            builder.Services.AddDbContext<TaskTrackerCosmosDbContext>(opt =>
-            {
-                opt.UseCosmos(builder.Configuration.GetSection("CosmosDb:AccountEndpointUri").Value!,
-                              builder.Configuration.GetSection("CosmosDb:PrimaryKey").Value!,
-                              builder.Configuration.GetSection("CosmosDb:DatabaseName").Value!);
-            });
+            
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<ITaskRepository, TaskRepository>();
@@ -87,6 +83,38 @@ namespace TaskTracker_Cosmos.API
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
             builder.Services.AddControllers();
+
+            static void KeyVaultConfiguration(WebApplicationBuilder builder)
+            {
+                string[] secretValues = ["SecretAccountEndpointUri", "SecretPrimaryKey", "SecretDBName"];
+                var keyVaultUrl = builder.Configuration["KeyVaultUrl"]!;
+                var secretClient = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
+                builder.Services.AddSingleton(secretClient);
+
+                foreach(var value in secretValues)
+                {
+                    string secretString = builder.Configuration[value]!;
+                    KeyVaultSecret secret = secretClient.GetSecret(secretString);
+                    builder.Configuration[secretString] = secret.Value;
+                }
+
+               
+                //add foreach so you can add jwt token
+            }
+            KeyVaultConfiguration(builder);
+
+            // Add services to the container.
+            builder.Services.AddDbContext<TaskTrackerCosmosDbContext>(opt =>
+            {
+                /*opt.UseCosmos(builder.Configuration.GetSection("CosmosDb:AccountEndpointUri").Value!,
+                              builder.Configuration.GetSection("CosmosDb:PrimaryKey").Value!,
+                              builder.Configuration.GetSection("CosmosDb:DatabaseName").Value!);*/
+                opt.UseCosmos(builder.Configuration[builder.Configuration["SecretAccountEndpointUri"]!]!,
+                              builder.Configuration[builder.Configuration["SecretPrimaryKey"]!]!,
+                              builder.Configuration[builder.Configuration["SecretDBName"]!]!);
+            });
+
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -94,7 +122,7 @@ namespace TaskTracker_Cosmos.API
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            if (!app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
@@ -102,6 +130,7 @@ namespace TaskTracker_Cosmos.API
 
             app.UseHttpsRedirection();
 
+            //app.UseAuthentication();
             app.UseAuthorization();
 
 

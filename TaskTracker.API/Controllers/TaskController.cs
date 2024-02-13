@@ -11,7 +11,7 @@ using Task = TaskTracker.DataAccess.Entities.Task;
 
 namespace TaskTracker.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TaskController : ControllerBase

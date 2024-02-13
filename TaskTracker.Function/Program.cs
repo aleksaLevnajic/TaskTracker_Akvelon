@@ -1,4 +1,6 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,5 +28,16 @@ namespace TaskTracker.Function
 
             return cosmosClient;
         }
+        
+
+        /*static void KeyVaultConfiguration(IConfigurationBuilder builder)
+        {
+            var keyVaultUrl = builder.Build()["KeyVaultUrl"];
+
+            var secretClient = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
+
+            //builder.AddAzureKeyVault(secretClient, new KeyVaultSecretManager());
+        }
+        //KeyVaultConfiguration(builder);*/
     }
 }
