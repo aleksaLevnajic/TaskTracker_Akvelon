@@ -369,3 +369,5 @@ FodyWeavers.xsd
 /TaskTracker.API/appsettings.Development.json
 /TaskTracker.API/appsettings.Production.json
 /TaskTracker.API/docker-compose.yml
+/TaskTracker.API/Key-Vault-reference-syntax.txt
+/TaskTracker-Cosmos.API/appsettings.Production.json
