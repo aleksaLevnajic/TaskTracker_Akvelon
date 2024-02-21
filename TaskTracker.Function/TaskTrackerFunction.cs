@@ -30,8 +30,8 @@ namespace TaskTracker.Function
         //"0 */5 * * * *" every 5 min
         public async Task Run([TimerTrigger("0 */1 * * * *")]TimerInfo myTimer, ILogger log)
         {    
-            string GetSecret(string secretName)
-                => secretName + ": " + Environment.GetEnvironmentVariable(secretName, EnvironmentVariableTarget.Process);
+            /*string GetSecret(string secretName)
+                => secretName + ": " + Environment.GetEnvironmentVariable(secretName, EnvironmentVariableTarget.Process);*/
             /*var accountEndpoint = configuration["AccountEndpoint"];
             var accountKey = configuration["AccountKey"];*/
 
@@ -72,9 +72,10 @@ namespace TaskTracker.Function
                                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                             };
 
-                            var projectJson = JsonConvert.SerializeObject(project, jsonSettings);
+                            /*var projectJson = JsonConvert.SerializeObject(project, jsonSettings);
 
-                            await cosmosContainer.CreateItemAsync(projectJson);
+                            await cosmosContainer.CreateItemAsync(projectJson);*/
+                            await cosmosContainer.CreateItemAsync(project);
                         }
                     }
                 }

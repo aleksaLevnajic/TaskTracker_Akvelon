@@ -89,14 +89,14 @@ namespace TaskTracker.API.Controllers
                 };
                 _unitOfWork.ProjectRepository.Add(project);
                 _unitOfWork.Save();
+                return Created("https://localhost:7054/swagger/index.html", project);
             }
             catch(DbUpdateException ex)
             {
                 return StatusCode(500, new { error = "Internal server error.", ex.Message });
-            }
-            
-
-            return Created();
+            }           
+            //CHECK WHY IT RETURNS 204 INSTEAD OF 201
+            //return Created();
 
         }
 

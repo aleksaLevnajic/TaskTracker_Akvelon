@@ -95,13 +95,15 @@ namespace TaskTracker.API.Controllers
 
                 _unitOfWork.TaskRepository.Add(task);
                 _unitOfWork.Save();
+
+                return Created("https://localhost:7054/swagger/index.html", task);
             }
             catch(DbUpdateException ex)
             {
                 return StatusCode(500, new { error = "Internal server error.", ex.Message });
             }            
 
-            return Created();
+            //return Created();
         }
 
         [HttpPut("{id}")]

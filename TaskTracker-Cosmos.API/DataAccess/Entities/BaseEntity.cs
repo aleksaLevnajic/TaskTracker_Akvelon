@@ -4,7 +4,7 @@ namespace TaskTracker_Cosmos.API.DataAccess.Entities
 {
     public class BaseEntity
     {
-        //[JsonProperty("id")]
+        //[JsonProperty(PropertyName = "id")]
         public int Id {  get; set; }
     }
 }

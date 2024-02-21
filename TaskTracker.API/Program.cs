@@ -87,14 +87,14 @@ namespace TaskTracker.API
                 builder.Configuration[secretConnString] = secret.Value;
                 //add foreach so you can add jwt token
             }
-            KeyVaultConfiguration(builder);
-
-            builder.Services.AddDbContext<TaskTrackerDbContext>(options =>
-                options.UseSqlServer(builder.Configuration[builder.Configuration["SecretName"]!]!));
+            //KeyVaultConfiguration(builder);
 
             /*builder.Services.AddDbContext<TaskTrackerDbContext>(options =>
+                options.UseSqlServer(builder.Configuration[builder.Configuration["SecretName"]!]!));*/
+
+            builder.Services.AddDbContext<TaskTrackerDbContext>(options =>
                 options.UseSqlServer(
-                builder.Configuration.GetConnectionString("SqlServerCS")));*/
+                builder.Configuration.GetConnectionString("SqlServerCS")));            
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -145,11 +145,11 @@ namespace TaskTracker.API
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment()) //added ! to test for production stage
-            {
+            //if (!app.Environment.IsDevelopment()) //added ! to test for production stage
+            //{
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+            //}
             app.UseCors("AllowSpecificOrigin");
             app.UseHttpsRedirection();
 
