@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTracker-Cosmos.API", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTracker.Function", "TaskTracker.Function\TaskTracker.Function.csproj", "{966BEB70-91DC-483A-B4BE-3B1DC5E54EE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTrackerAPi.IntefrationTests", "TaskTrackerAPi.IntefrationTests\TaskTrackerAPi.IntefrationTests.csproj", "{8D5A3386-B8C4-4FA1-9245-0C4784B63028}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTrackerAPi.IntefrationTests", "TaskTrackerAPi.IntefrationTests\TaskTrackerAPi.IntefrationTests.csproj", "{8D5A3386-B8C4-4FA1-9245-0C4784B63028}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
